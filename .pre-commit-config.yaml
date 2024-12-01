@@ -3,23 +3,18 @@ repos:
     rev: 0.5.5
     hooks:
       - id: uv-lock
-        stages: [prepare-commit-msg]
+        stages: [pre-commit]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.1
     hooks:
       - id: ruff
         args: [--fix]
         always_run: true
-        stages: [prepare-commit-msg]
+        stages: [pre-commit]
       - id: ruff
         args: [--select, I, --fix]
         always_run: true
-        stages: [prepare-commit-msg]
+        stages: [pre-commit]
       - id: ruff-format
         always_run: true
-        stages: [prepare-commit-msg]
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.0.0
-    hooks:
-      - id: commitizen
-        stages: [commit-msg]
+        stages: [pre-commit]

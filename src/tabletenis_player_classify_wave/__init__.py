@@ -1,2 +1,2 @@
 def main() -> None:
-    print("Hello from tabletenis-player-classify-wave!")
+	print("Hello from tabletenis-player-classify-wave!")
