@@ -1,0 +1,24 @@
+[project]
+name = "tabletenis-player-classify-wave"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "hermeschen1116", email = "108386417+hermeschen1116@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+tabletenis-player-classify-wave = "tabletenis_player_classify_wave:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pip>=24.3.1",
+    "setuptools>=75.6.0",
+    "wheel>=0.45.1",
+]
