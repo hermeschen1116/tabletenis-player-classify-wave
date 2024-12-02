@@ -62,6 +62,7 @@ dataset = Dataset(train_df.to_arrow())
 dataset = dataset.map(
 	lambda sample: {"data": torch.stack(tuple(torch.tensor(sample[col]) for col in features), dim=1)},
 	remove_columns=features,
+	num_proc=num_workers,
 )
 
 dataset = dataset.train_test_split(test_size=0.2)
@@ -171,12 +172,16 @@ test_dataset = Dataset(test_df.to_arrow())
 test_dataset = test_dataset.map(
 	lambda sample: {"data": torch.stack(tuple(torch.tensor(sample[col]) for col in features), dim=1)},
 	remove_columns=features,
+	num_proc=num_workers,
 )
 
 test_dataset = test_dataset.with_format("torch", columns=["data"], output_all_columns=True)
 
 test_dataset = test_dataset.map(
-	lambda sample: {"output": model(sample.unsqueeze(0).to(device))}, input_columns=["data"], remove_columns=["data"]
+	lambda sample: {"output": model(sample.unsqueeze(0).to(device))},
+	input_columns=["data"],
+	remove_columns=["data"],
+	num_proc=num_workers,
 )
 
 test_dataset = test_dataset.map(
@@ -192,6 +197,7 @@ test_dataset = test_dataset.map(
 	},
 	input_columns=["output"],
 	remove_columns=["output"],
+	num_proc=num_workers,
 )
 
 test_dataset.to_csv("../data/result.csv", num_proc=num_workers)
