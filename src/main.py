@@ -1,9 +1,11 @@
 import multiprocessing
+import os
 from typing import List
 
 import polars
 import torch
 from datasets import Dataset
+from dotenv import load_dotenv
 from sklearn.metrics import roc_auc_score
 from torch.nn import CrossEntropyLoss
 from torch.utils.data import DataLoader
@@ -11,16 +13,19 @@ from tqdm.auto import tqdm
 
 from tabletenis_player_classify_wave.Model import LSTMClassifier
 
+load_dotenv()
+
+project_root: str = os.environ.get("PROJECT_ROOT", "")
 num_workers: int = multiprocessing.cpu_count()
 device: str = "cuda"
 features: List[str] = ["Ax", "Ay", "Az", "Gx", "Gy", "Gz"]
 labels: List[str] = ["gender", "hold racket handed", "play years", "level"]
 
 train_info_df = polars.read_csv(
-	"../data/train_info.csv", n_threads=num_workers, low_memory=True, rechunk=True, use_pyarrow=True
+	f"{project_root}/data/train_info.csv", n_threads=num_workers, low_memory=True, rechunk=True, use_pyarrow=True
 )
 train_data_df = polars.read_csv(
-	"../data/train_data.csv", n_threads=num_workers, low_memory=True, rechunk=True, use_pyarrow=True
+	f"{project_root}/data/train_data.csv", n_threads=num_workers, low_memory=True, rechunk=True, use_pyarrow=True
 )
 
 train_data_df = (
@@ -138,7 +143,7 @@ for i in range(num_epochs):
         """)
 
 test_df = polars.read_csv(
-	"../data/test_data.csv", n_threads=num_workers, low_memory=True, rechunk=True, use_pyarrow=True
+	f"{project_root}/data/test_data.csv", n_threads=num_workers, low_memory=True, rechunk=True, use_pyarrow=True
 )
 test_df = test_df.sort("data_id", "time_order").set_sorted("time_order")
 
